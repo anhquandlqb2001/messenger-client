@@ -1,20 +1,20 @@
 import { Form, Formik } from "formik";
-import InputField from "../../../app/components/InputField";
+import InputField from "../../../components/InputField";
+import { useAppDispatch } from "../../../app/hooks";
+import { FormError, loginUser } from "../../../services/user/userSlice";
 import FormSubmit from "./FormSubmit";
 
 type Props = {
   onOptionClick: () => void;
 };
 
-type LoginFormProperties = {
-  email: string,
-  password: string
-}
+export type LoginFormProperties = {
+  email: string;
+  password: string;
+};
 
 const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
-  const onSubmit = (values: LoginFormProperties) => {
-    console.log(values);
-  };
+  const dispatch = useAppDispatch();
 
   return (
     <Formik
@@ -23,8 +23,20 @@ const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
         password: "",
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        onSubmit(values)
-        setSubmitting(false)
+        const resultAction = await dispatch(loginUser(values));
+        if (resultAction.type.includes("fulfilled")) {
+          // const jwt = resultAction.payload;
+        } else {
+          const formError = resultAction.payload as FormError;
+          if (formError) {
+            // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, those types will be available here.
+            setErrors({
+              email: "Wrong email or password",
+              password: "Wrong email or password" //formError.message,
+            });
+          }
+        }
+        setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (

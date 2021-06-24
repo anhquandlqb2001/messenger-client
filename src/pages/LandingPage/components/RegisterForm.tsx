@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import InputField from "../../../app/components/InputField";
+import InputField from "../../../components/InputField";
 import FormSubmit from "./FormSubmit";
 
 type Props = {
