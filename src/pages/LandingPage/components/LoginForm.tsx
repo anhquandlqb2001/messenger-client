@@ -3,6 +3,7 @@ import InputField from "../../../components/InputField";
 import { useAppDispatch } from "../../../app/hooks";
 import { FormError, loginUser } from "../../../services/user/userSlice";
 import FormSubmit from "./FormSubmit";
+import { useHistory } from "react-router";
 
 type Props = {
   onOptionClick: () => void;
@@ -15,6 +16,7 @@ export type LoginFormProperties = {
 
 const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
   const dispatch = useAppDispatch();
+  const history = useHistory();
 
   return (
     <Formik
@@ -26,13 +28,14 @@ const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
         const resultAction = await dispatch(loginUser(values));
         if (resultAction.type.includes("fulfilled")) {
           // const jwt = resultAction.payload;
+          history.push("/m");
         } else {
           const formError = resultAction.payload as FormError;
           if (formError) {
             // Being that we passed in ValidationErrors to rejectType in `createAsyncThunk`, those types will be available here.
             setErrors({
               email: "Wrong email or password",
-              password: "Wrong email or password" //formError.message,
+              password: "Wrong email or password", //formError.message,
             });
           }
         }

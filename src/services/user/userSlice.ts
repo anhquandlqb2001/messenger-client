@@ -10,11 +10,10 @@ export interface FormError {
 
 export interface User {
   id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
 }
-
 
 interface UserState {
   user: User;
@@ -24,8 +23,8 @@ interface UserState {
 const initialState: UserState = {
   user: {
     email: "",
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     id: "",
   },
   error: null,
@@ -37,13 +36,26 @@ export const loginUser = createAsyncThunk<
   { rejectValue: FormError }
 >("user/loginUser", async (user, { rejectWithValue }) => {
   try {
-    const response = await userAPI.login<LoginFormProperties>(user)
+    const response = await userAPI.login<LoginFormProperties>(user);
 
     return response.data.access_token;
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
 });
+
+export const userProfile = createAsyncThunk<User, any, { rejectValue: any }>(
+  "user/userProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.fetchUser();
+
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -59,6 +71,20 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
+        if (action.payload) {
+          state.error = action.payload;
+        } else {
+          state.error = {
+            message: "Something wrong",
+            statusCode: "401",
+          };
+        }
+      })
+      .addCase(userProfile.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(userProfile.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload;
         } else {
