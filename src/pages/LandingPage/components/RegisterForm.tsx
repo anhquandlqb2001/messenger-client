@@ -3,10 +3,14 @@ import InputField from "../../../app/components/InputField";
 import FormSubmit from "./FormSubmit";
 
 type Props = {
-  onOptionClick: any;
+  onOptionClick: () => void;
 };
 
 const RegisterForm: React.FC<Props> = ({ onOptionClick }) => {
+  const onSubmit = () => {
+    console.log("on register");
+  };
+
   return (
     <Formik
       initialValues={{
@@ -24,7 +28,6 @@ const RegisterForm: React.FC<Props> = ({ onOptionClick }) => {
             required
             id="email"
             name="email"
-            autoComplete="email"
             autoFocus
           />
           <InputField
@@ -33,7 +36,6 @@ const RegisterForm: React.FC<Props> = ({ onOptionClick }) => {
             name="password"
             type="password"
             id="password"
-            autoComplete="current-password"
           />
           <InputField
             placeholder="Retype password"
@@ -41,7 +43,6 @@ const RegisterForm: React.FC<Props> = ({ onOptionClick }) => {
             name="repassword"
             type="password"
             id="repassword"
-            autoComplete="current-password"
           />
           <FormSubmit
             onOptionClick={onOptionClick}

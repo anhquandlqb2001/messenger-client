@@ -16,7 +16,7 @@ const Option = styled.p`
 type Prop = {
   submitText: string;
   optionText: string;
-  onOptionClick: any;
+  onOptionClick: () => void;
 };
 
 const FormSubmit: React.FC<Prop> = ({
@@ -26,7 +26,7 @@ const FormSubmit: React.FC<Prop> = ({
 }) => {
   return (
     <FormSubmitContainer>
-      <LoginButton>{submitText}</LoginButton>
+      <LoginButton type="submit">{submitText}</LoginButton>
       <Option onClick={onOptionClick}>{optionText}</Option>
     </FormSubmitContainer>
   );

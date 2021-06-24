@@ -3,10 +3,19 @@ import InputField from "../../../app/components/InputField";
 import FormSubmit from "./FormSubmit";
 
 type Props = {
-  onOptionClick: any;
+  onOptionClick: () => void;
 };
 
+type LoginFormProperties = {
+  email: string,
+  password: string
+}
+
 const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
+  const onSubmit = (values: LoginFormProperties) => {
+    console.log(values);
+  };
+
   return (
     <Formik
       initialValues={{
@@ -14,7 +23,8 @@ const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
         password: "",
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        console.log(values);
+        onSubmit(values)
+        setSubmitting(false)
       }}
     >
       {({ isSubmitting }) => (

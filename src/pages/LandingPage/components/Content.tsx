@@ -34,7 +34,7 @@ const LeftAsideParagraph = styled.p`
 `;
 
 const RightAsideContainer = styled.div`
-  ${tw`w-auto max-w-2xl`}
+  ${tw`w-auto max-w-xl`}
 `;
 
 const Banner = styled.img`
