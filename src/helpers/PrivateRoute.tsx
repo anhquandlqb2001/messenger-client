@@ -1,19 +1,21 @@
-import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route } from "react-router-dom";
+import useLocalStorage from "./useLocalstorage";
 
-const PrivateRoute = ({ component: Component, ...rest }: any) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      localStorage.getItem('token') ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{ pathname: '/login', state: { from: props.location } }}
-        />
-      )
-    }
-  />
-);
+const PrivateRoute = ({ component: Component, ...rest }: any) => {
+  const [token] = useLocalStorage("token");
 
-export default PrivateRoute
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        token ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
+      }
+    />
+  );
+};
+
+export default PrivateRoute;
