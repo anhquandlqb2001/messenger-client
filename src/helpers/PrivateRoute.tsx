@@ -1,5 +1,5 @@
 import { Redirect, Route } from "react-router-dom";
-import useLocalStorage from "./useLocalstorage";
+import useLocalStorage from "./useLocalStorage";
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
   const [token] = useLocalStorage("token");
