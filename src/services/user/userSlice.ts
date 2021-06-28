@@ -1,32 +1,21 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { LoginFormProperties } from "../../pages/LandingPage/components/LoginForm";
-import userAPI from "./userAPI";
+import { User } from "../friends/friendApis";
+import userAPI from "./userApis";
 
 export interface FormError {
   message: string;
   statusCode: string;
 }
 
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-}
-
 interface UserState {
-  user: User;
+  user: User | null;
   error: FormError | null | undefined;
 }
 
 const initialState: UserState = {
-  user: {
-    email: "",
-    firstName: "",
-    lastName: "",
-    id: "",
-  },
+  user: null,
   error: null,
 };
 
@@ -36,9 +25,8 @@ export const loginUser = createAsyncThunk<
   { rejectValue: FormError }
 >("user/loginUser", async (user, { rejectWithValue }) => {
   try {
-    const response = await userAPI.login<LoginFormProperties>(user);
-
-    return response.data.access_token;
+    const { data } = await userAPI.login<LoginFormProperties>(user);
+    return data.access_token;
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -49,7 +37,6 @@ export const userProfile = createAsyncThunk<User, any, { rejectValue: any }>(
   async (_, { rejectWithValue }) => {
     try {
       const response = await userAPI.fetchUser();
-
       return response.data.user;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -67,7 +54,6 @@ export const userSlice = createSlice({
     builder
       .addCase(loginUser.fulfilled, (state, action) => {
         action.payload && localStorage.setItem("token", action.payload);
-
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
