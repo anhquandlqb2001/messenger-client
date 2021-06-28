@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import userReducer from "../services/user/userSlice";
+import friendReducer from "../services/friends/friendSlice";
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    friends: friendReducer,
   },
 });
 
