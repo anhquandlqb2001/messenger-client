@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import InputField from "../../../components/InputField";
 import { useAppDispatch } from "../../../app/hooks";
-import { FormError, loginUser } from "../../../services/user/userSlice";
+import { FormError, loginUser } from "../../../services/user/slices";
 import FormSubmit from "./FormSubmit";
 import { useHistory } from "react-router";
 

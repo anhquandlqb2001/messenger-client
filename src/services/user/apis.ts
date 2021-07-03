@@ -1,5 +1,5 @@
 import axios from "axios";
-import { User } from "../friends/friendApis";
+import { User } from "../friends/apis";
 
 export interface LoginUserResponse {
   access_token: string;

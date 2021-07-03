@@ -4,7 +4,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
-import friendApis, { User } from "./friendApis";
+import friendApis, { User } from "./apis";
 
 const friendsAdapter = createEntityAdapter<User>({
   // Assume IDs are stored in a field other than `book.id`

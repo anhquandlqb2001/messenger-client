@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import { LoginFormProperties } from "../../pages/LandingPage/components/LoginForm";
-import { User } from "../friends/friendApis";
-import userAPI from "./userApis";
+import { User } from "../friends/apis";
+import userAPI from "./apis";
 
 export interface FormError {
   message: string;
