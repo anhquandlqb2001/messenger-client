@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import InputField from "../../../components/InputField";
 import { useAppDispatch } from "../../../app/hooks";
-import { FormError, loginUser } from "../../../services/user/slices";
+import { FormError, login } from "../../../services/user/slices";
 import FormSubmit from "./FormSubmit";
 import { useHistory } from "react-router";
 
@@ -25,7 +25,7 @@ const LoginForm: React.FC<Props> = ({ onOptionClick }) => {
         password: "",
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        const resultAction = await dispatch(loginUser(values));
+        const resultAction = await dispatch(login(values));
         if (resultAction.type.includes("fulfilled")) {
           // const jwt = resultAction.payload;
           history.push("/m");

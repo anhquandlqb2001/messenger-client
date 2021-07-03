@@ -19,11 +19,11 @@ const initialState: UserState = {
   error: null,
 };
 
-export const loginUser = createAsyncThunk<
+export const login = createAsyncThunk<
   string,
   LoginFormProperties,
   { rejectValue: FormError }
->("user/loginUser", async (user, { rejectWithValue }) => {
+>("user/login", async (user, { rejectWithValue }) => {
   try {
     const { data } = await userAPI.login<LoginFormProperties>(user);
     return data.access_token;
@@ -32,8 +32,8 @@ export const loginUser = createAsyncThunk<
   }
 });
 
-export const userProfile = createAsyncThunk<User, any, { rejectValue: any }>(
-  "user/userProfile",
+export const fetchProfile = createAsyncThunk<User, any, { rejectValue: any }>(
+  "user/fetchProfile",
   async (_, { rejectWithValue }) => {
     try {
       const response = await userAPI.fetchUser();
@@ -52,11 +52,11 @@ export const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loginUser.fulfilled, (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         action.payload && localStorage.setItem("token", action.payload);
         state.error = null;
       })
-      .addCase(loginUser.rejected, (state, action) => {
+      .addCase(login.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload;
         } else {
@@ -66,11 +66,11 @@ export const userSlice = createSlice({
           };
         }
       })
-      .addCase(userProfile.fulfilled, (state, action) => {
+      .addCase(fetchProfile.fulfilled, (state, action) => {
         state.user = action.payload;
         state.error = null;
       })
-      .addCase(userProfile.rejected, (state, action) => {
+      .addCase(fetchProfile.rejected, (state, action) => {
         if (action.payload) {
           state.error = action.payload;
         } else {

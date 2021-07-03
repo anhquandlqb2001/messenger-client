@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { conversationsSelectors, fetchConversations } from "../../services/conversations/slices";
-import { selectUser, userProfile } from "../../services/user/slices";
+import { selectUser, fetchProfile } from "../../services/user/slices";
 
 const Message = () => {
   const dispatch = useAppDispatch();
@@ -9,7 +9,7 @@ const Message = () => {
   const conversations = useAppSelector(conversationsSelectors.selectAll);
 
   useEffect(() => {
-    const promise = dispatch(userProfile(""));
+    const promise = dispatch(fetchProfile(""));
     return () => promise.abort();
   }, []);
 
