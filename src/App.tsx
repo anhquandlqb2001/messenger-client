@@ -5,7 +5,7 @@ import PrivateRoute from "./helpers/PrivateRoute";
 import useLocalStorage from "./helpers/useLocalStorage";
 import { BASE_URL } from "./libs/config";
 import LandingPage from "./pages/LandingPage";
-import Message from "./pages/Message";
+import Chat from "./pages/Chat";
 
 function App() {
   const [token, setToken] = useLocalStorage("token");
@@ -25,7 +25,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={LandingPage} />
-        <PrivateRoute exact path="/m" component={Message} />
+        <PrivateRoute exact path="/m" component={Chat} />
         <Route path="*" component={() => <h1>404 Not found</h1>} />
       </Switch>
     </Router>
