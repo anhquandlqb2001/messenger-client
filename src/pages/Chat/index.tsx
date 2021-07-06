@@ -1,12 +1,5 @@
-import { useEffect } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  conversationsSelectors,
-  fetchConversations,
-} from "../../services/conversations/slices";
-import { selectUser, fetchProfile } from "../../services/user/slices";
 import Conversation from "./components/Conversation";
 
 const ChatContainer = styled.div`
@@ -26,20 +19,6 @@ const MessageWrapper = styled.div`
 `;
 
 const Chat = () => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector(selectUser);
-  const conversations = useAppSelector(conversationsSelectors.selectAll);
-
-  useEffect(() => {
-    const promise = dispatch(fetchProfile(""));
-    return () => promise.abort();
-  }, []);
-
-  useEffect(() => {
-    const promise = dispatch(fetchConversations());
-    return () => promise.abort();
-  }, []);
-
   return (
     <ChatContainer>
       <ConversationWrapper>

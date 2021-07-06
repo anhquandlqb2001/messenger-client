@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import {
+  conversationsSelectors,
+  fetchConversations,
+} from "../../../services/conversations/slices";
 
 const ConversationItemContainer = styled.div`
   ${tw`flex my-2 items-center cursor-pointer py-2 hover:bg-gray-200`}
@@ -10,22 +16,45 @@ const Avatar = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  ${tw`flex flex-col`}
+  ${tw`flex flex-col ml-2`}
 `;
 
-const ConversationItem = () => (
+const LatestMessage = styled.p`
+  ${tw`text-gray-600`}
+`;
+
+type ConversationItemProps = {
+  title: string;
+  latestMessage?: string;
+};
+
+const ConversationItem: React.FC<ConversationItemProps> = ({ title }) => (
   <ConversationItemContainer>
     <Avatar />
     <ContentContainer>
-      <h3>Nguyen Truyen</h3>
-      <p>Akiklooo</p>
+      <h3>{title}</h3>
+      <LatestMessage>Akiklooo</LatestMessage>
     </ContentContainer>
   </ConversationItemContainer>
 );
 
 const Conversation = () => {
-  const conversations = [1, 2, 3].map((item) => <ConversationItem />);
-  return <>{conversations}</>;
+  const dispatch = useAppDispatch();
+
+  const conversations = useAppSelector(conversationsSelectors.selectAll);
+
+  useEffect(() => {
+    const promise = dispatch(fetchConversations());
+    return () => promise.abort();
+  }, []);
+
+  return (
+    <>
+      {conversations.map((conversation) => (
+        <ConversationItem title={conversation.title} />
+      ))}
+    </>
+  );
 };
 
 export default Conversation;
