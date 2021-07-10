@@ -11,6 +11,10 @@ const ConversationItemContainer = styled.div`
   ${tw`flex my-2 items-center cursor-pointer py-2 hover:bg-gray-200`}
 `;
 
+const ConversationContainer = styled.div`
+  ${tw`mx-2`}
+`
+
 const Avatar = styled.div`
   ${tw`rounded-full w-14 h-14 bg-gray-700`}
 `;
@@ -49,11 +53,11 @@ const Conversation = () => {
   }, []);
 
   return (
-    <>
+    <ConversationContainer>
       {conversations.map((conversation) => (
-        <ConversationItem title={conversation.title} />
+        <ConversationItem key={conversation.id} title={conversation.title} />
       ))}
-    </>
+    </ConversationContainer>
   );
 };
 
