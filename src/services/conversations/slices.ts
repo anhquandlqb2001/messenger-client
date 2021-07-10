@@ -12,9 +12,10 @@ import conversationApis from "./apis";
 export interface Message {
   id: string;
   message: string;
-  userId: string;
-  conversationId: string;
+  user: string;
+  conversation: string;
   createdAt: Date;
+  deletedAt?: Date;
 }
 
 export interface Conversation {
@@ -58,14 +59,14 @@ const conversationSlice = createSlice({
   reducers: {
     addMessage(
       state,
-      action: PayloadAction<{ conversationId: string; message: Message }>
+      action: PayloadAction<{ conversation: string; message: Message }>
     ) {
       const updatedConversation =
-        state.entities[`${action.payload.conversationId}`];
+        state.entities[`${action.payload.conversation}`];
       updatedConversation?.messages.push(action.payload.message);
 
       conversationAdapter.updateOne(state, {
-        id: action.payload.conversationId,
+        id: action.payload.conversation,
         changes: updatedConversation as any,
       });
     },

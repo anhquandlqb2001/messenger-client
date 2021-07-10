@@ -9,7 +9,7 @@ const createSocketMiddleware: Middleware = (api) => (next) => (action) => {
       socket = io("http://localhost:5000", { forceNew: true });
       socket.on("receive-message", (message: Message) => {
         api.dispatch(
-          addMessage({ conversationId: message.conversationId, message })
+          addMessage({ conversation: message.conversation, message })
         );
       });
       return next(action);

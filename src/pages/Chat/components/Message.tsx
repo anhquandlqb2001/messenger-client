@@ -1,43 +1,67 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import { useAppSelector } from "../../../app/hooks";
+import conversationApi from "../../../services/conversations/apis";
+import { Message } from "../../../services/conversations/slices";
+import { selectUser } from "../../../services/user/slices";
 
 const MessageContainer = styled.div`
-  ${tw`flex`}
+  ${tw`flex my-2`}
 `;
 
 const MessageContentContainer = styled.div`
   ${tw`px-2 py-1 rounded-lg`}
-`
+`;
 
 const IncomingMessageContainer = styled(MessageContentContainer)`
-  ${tw`inline-block bg-blue-400`}
+  ${tw`inline-block bg-gray-400`}
 `;
 
 const OutgoingMessageContainer = styled(MessageContentContainer)`
-  ${tw`inline-block bg-gray-400 ml-auto`}
+  ${tw`inline-block bg-blue-400 ml-auto`}
 `;
 
-const IncomingMessage = () => {
+const IncomingMessage: React.FC<Message> = ({ message }) => {
   return (
     <MessageContainer>
-      <IncomingMessageContainer>Hello world</IncomingMessageContainer>
+      <IncomingMessageContainer>{message}</IncomingMessageContainer>
     </MessageContainer>
   );
 };
 
-const OutgoingMessage = () => {
+const OutgoingMessage: React.FC<Message> = (message) => {
   return (
     <MessageContainer>
-      <OutgoingMessageContainer>Hello</OutgoingMessageContainer>
+      <OutgoingMessageContainer>{message.message}</OutgoingMessageContainer>
     </MessageContainer>
   );
 };
 
 const Chat = () => {
+  const { user } = useAppSelector(selectUser);
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      const response = await conversationApi.messages(
+        "8facb8c4-e1d6-4f31-84bc-587e99cb0b35"
+      );
+      setMessages(response.data.messages);
+    };
+
+    fetchMessages();
+  }, []);
+
   return (
     <div>
-      <IncomingMessage />
-      <OutgoingMessage />
+      {messages.map((message) =>
+        message.user === user?.id ? (
+          <OutgoingMessage {...message} />
+        ) : (
+          <IncomingMessage {...message} />
+        )
+      )}
     </div>
   );
 };
