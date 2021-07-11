@@ -10,7 +10,7 @@ const ChatContainer = styled.div`
 `;
 
 const ConversationWrapper = styled.div`
-  flex: 1;
+  flex: 1.5;
   border-right-width: 1px;
   height: 100%;
   ${tw`border-gray-600 border-opacity-30`}
@@ -18,6 +18,13 @@ const ConversationWrapper = styled.div`
 
 const MessageWrapper = styled.div`
   flex: 4;
+`;
+
+const OptionWrapper = styled.div`
+  flex: 1.5;
+  border-left-width: 1px;
+  height: 100%;
+  ${tw`border-gray-600 border-opacity-30`}
 `;
 
 const Chat = () => {
@@ -29,6 +36,7 @@ const Chat = () => {
       <MessageWrapper>
         <Message />
       </MessageWrapper>
+      <OptionWrapper />
     </ChatContainer>
   );
 };

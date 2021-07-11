@@ -5,9 +5,10 @@ import { useAppSelector } from "../../../app/hooks";
 import conversationApi from "../../../services/conversations/apis";
 import { Message } from "../../../services/conversations/slices";
 import { selectUser } from "../../../services/user/slices";
+import MessageInput from "./MessageInput";
 
 const MessageContainer = styled.div`
-  ${tw`flex my-2`}
+  ${tw`flex mb-2`}
 `;
 
 const MessageContentContainer = styled.div`
@@ -21,6 +22,16 @@ const IncomingMessageContainer = styled(MessageContentContainer)`
 const OutgoingMessageContainer = styled(MessageContentContainer)`
   ${tw`inline-block bg-blue-400 ml-auto`}
 `;
+
+const ChatContainer = styled.div`
+  ${tw`flex min-h-screen max-h-screen flex-col`}
+`;
+
+const MessageInputWrapper = styled.div`
+  ${tw`mt-auto w-full`}
+`;
+
+const MessageHistory = styled.div``;
 
 const IncomingMessage: React.FC<Message> = ({ message }) => {
   return (
@@ -53,16 +64,21 @@ const Chat = () => {
     fetchMessages();
   }, []);
 
+  const chat = messages.map((message) =>
+    message.user === user?.id ? (
+      <OutgoingMessage {...message} />
+    ) : (
+      <IncomingMessage {...message} />
+    )
+  );
+
   return (
-    <div>
-      {messages.map((message) =>
-        message.user === user?.id ? (
-          <OutgoingMessage {...message} />
-        ) : (
-          <IncomingMessage {...message} />
-        )
-      )}
-    </div>
+    <ChatContainer>
+      <MessageHistory>{chat}</MessageHistory>
+      <MessageInputWrapper>
+        <MessageInput />
+      </MessageInputWrapper>
+    </ChatContainer>
   );
 };
 
