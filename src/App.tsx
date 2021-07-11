@@ -6,12 +6,15 @@ import useLocalStorage from "./helpers/useLocalStorage";
 import { BASE_URL } from "./libs/config";
 import LandingPage from "./pages/LandingPage";
 import Chat from "./pages/Chat";
+import { useEffect } from "react";
+import { useAppDispatch } from "./app/hooks";
+import { fetchProfile } from "./services/user/slices";
 
 function App() {
   const [token, setToken] = useLocalStorage("token");
   axios.defaults.baseURL = BASE_URL;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+  const dispatch = useAppDispatch();
   // axios.interceptors.response.use(
   //   (response) => response,
   //   (error) => {
@@ -20,6 +23,10 @@ function App() {
   //     }
   //   }
   // );
+
+  useEffect(() => {
+    dispatch(fetchProfile("foo"));
+  }, []);
 
   return (
     <Router>
