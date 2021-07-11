@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
-import PrivateRoute from "./helpers/PrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import useLocalStorage from "./helpers/useLocalStorage";
 import { BASE_URL } from "./libs/config";
 import LandingPage from "./pages/LandingPage";
